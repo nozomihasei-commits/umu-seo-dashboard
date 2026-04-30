@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UMU SEO・AI対策戦略</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
+
+:root{
+  --navy:#1A2B4A; --blue:#2196F3; --blue-l:#E3F2FD; --blue-m:#BBDEFB;
+  --green:#23A565; --green-l:#E8F5E9;
+  --amber:#FFC610; --amber-l:#FFFDE7;
+  --red:#DD4E40; --red-l:#FFEBEE;
+  --purple:#3E51B5;
+  --gray:#6B7280; --gray-l:#F9FAFB; --border:#E5E7EB;
+  --sw:200px; --hh:60px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans JP','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;background:#F8FAFC;color:var(--navy);font-size:14px;line-height:1.6}
+
+/* HEADER */
+.hd{position:fixed;top:0;left:0;right:0;height:var(--hh);background:#fff;border-bottom:3px solid #FFC610;display:flex;align-items:center;padding:0 24px;gap:14px;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.06)}
+.hd-logo{font-size:20px;font-weight:800;color:#FFC610;letter-spacing:-.02em}
+.hd-sep{width:1px;height:20px;background:var(--border)}
+.hd-title{font-size:14px;font-weight:600;color:var(--navy)}
+.hd-badge{margin-left:auto;font-size:11px;color:var(--gray);background:var(--gray-l);padding:3px 10px;border-radius:20px}
+
+/* SIDEBAR */
+.sb{position:fixed;top:var(--hh);left:0;bottom:0;width:var(--sw);background:#fff;border-right:1px solid var(--border);overflow-y:auto;z-index:90;padding:16px 0}
+.sb-group{padding:4px 14px 2px;font-size:9px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.1em;margin-top:10px}
+.sb a{display:block;padding:7px 14px;color:var(--gray);text-decoration:none;font-size:12px;border-left:3px solid transparent;transition:all .12s}
+.sb a:hover{background:var(--blue-l);color:var(--blue);border-left-color:var(--blue)}
+.sb a.on{background:var(--blue-l);color:var(--blue);border-left-color:var(--blue);font-weight:600}
+.sb-sub{padding-left:24px;font-size:11px}
+
+/* MAIN */
+.mn{margin-left:var(--sw);margin-top:var(--hh);padding:28px 32px;max-width:1100px}
+
+/* SECTION */
+.sec{margin-bottom:44px;scroll-margin-top:calc(var(--hh)+12px)}
+.sec-hd{display:flex;align-items:center;gap:10px;margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+.sec-num{width:28px;height:28px;border-radius:6px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.sec-num.gray{background:var(--gray)}
+.sec-title{font-size:18px;font-weight:700;color:var(--navy)}
+.sec-sub{font-size:12px;color:var(--gray);margin-left:auto}
+
+/* STRATEGY BULLETS */
+.strategy-item{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:10px;display:flex;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.strategy-item .icon{font-size:20px;flex-shrink:0;margin-top:2px}
+.strategy-item .body .title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.strategy-item .body .desc{font-size:12px;color:var(--gray);line-height:1.65}
+.strategy-item .body .sub{font-size:11px;color:var(--blue);margin-top:6px;font-weight:600}
+
+/* TEAM */
+.team-wrap{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+.team-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px 16px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.team-card .role{font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.team-card .name{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px;border-bottom:1px solid var(--border);padding-bottom:6px}
+.team-card .detail{font-size:11px;color:var(--gray);line-height:1.65}
+.team-card .badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;margin-bottom:6px}
+
+/* ANALYSIS */
+.a-sub{font-size:13px;font-weight:700;color:var(--navy);margin:20px 0 10px;display:flex;align-items:center;gap:8px}
+.a-sub::before{content:'■';color:var(--blue)}
+.data-src{background:var(--gray-l);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:11px;color:var(--gray);margin-bottom:14px}
+.data-src strong{color:var(--navy)}
+
+/* KPI TABLE */
+.kpi-tbl{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:14px}
+.kpi-tbl th{background:var(--navy);color:#fff;padding:8px 12px;font-size:12px;font-weight:600;text-align:left}
+.kpi-tbl td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.kpi-tbl tr:nth-child(even) td{background:var(--gray-l)}
+.pos{color:var(--green);font-weight:600} .neg{color:var(--red);font-weight:600} .neu{color:var(--amber);font-weight:600}
+
+/* INSIGHT */
+.ins{border-radius:7px;padding:10px 14px;margin-bottom:10px;border-left:4px solid;font-size:12px}
+.ins.good{background:var(--green-l);border-color:var(--green)}
+.ins.warn{background:#FFFDE7;border-color:#FFC610}
+.ins.bad{background:var(--red-l);border-color:var(--red)}
+.ins.info{background:var(--blue-l);border-color:var(--blue)}
+.ins .t{font-weight:700;margin-bottom:3px;font-size:12px}
+.ins.good .t{color:var(--green)} .ins.warn .t{color:#B8860B} .ins.bad .t{color:var(--red)} .ins.info .t{color:var(--blue)}
+.ins .b{color:#374151;line-height:1.6}
+
+/* CHARTS */
+.c2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.chart-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px 16px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.chart-card.full{grid-column:1/-1}
+.chart-title{font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.chart-note{font-size:10px;color:var(--gray);margin-top:5px;font-style:italic}
+.leg{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;font-size:10px;color:var(--gray)}
+.leg span{display:flex;align-items:center;gap:4px}
+.ld{width:9px;height:9px;border-radius:2px;flex-shrink:0;display:inline-block}
+
+/* ACTION PLAN */
+.action-num-header{font-size:13px;font-weight:700;color:var(--navy);margin:18px 0 8px;display:flex;align-items:center;gap:8px}
+.action-num-header .n{width:24px;height:24px;border-radius:5px;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.action-block{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.action-purpose{font-size:12px;color:var(--gray);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.action-purpose strong{color:var(--navy)}
+.action-items{list-style:none}
+.action-items li{font-size:12px;color:#374151;padding:4px 0;display:flex;align-items:flex-start;gap:6px;line-height:1.55;border-bottom:1px solid #F3F4F6}
+.action-items li:last-child{border:none}
+.action-items li::before{content:'→';color:var(--blue);flex-shrink:0;font-size:10px;margin-top:3px}
+.pri{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:auto}
+.pri-now{background:var(--red-l);color:var(--red)}
+.pri-mid{background:#FFFDE7;color:#B8860B}
+.pri-lng{background:var(--blue-l);color:var(--blue)}
+
+/* APPENDIX */
+.app-banner{background:var(--navy);color:#fff;border-radius:8px;padding:14px 20px;margin-bottom:20px}
+.app-banner h2{font-size:16px;font-weight:700;margin-bottom:4px}
+.app-banner p{font-size:12px;color:#94A3B8}
+
+/* DIVIDER */
+hr{border:none;border-top:1px solid var(--border);margin:16px 0}
+
+/* PRINT */
+@media print{.sb,.hd{display:none}.mn{margin-left:0;margin-top:0}}
+</style>
+</head>
+<body>
+
+<header class="hd">
+  <div class="hd-logo">UMU</div>
+  <div class="hd-sep"></div>
+  <div class="hd-title">SEO・AI対策戦略</div>
+  <div class="hd-badge">2026年5月1日</div>
+</header>
+
+<nav class="sb">
+  <div class="sb-group">本編</div>
+  <a href="#s1">1. グローバル戦略</a>
+  <a href="#s2">2. プロジェクト体制</a>
+  <a href="#s3">3. サイト実績分析</a>
+  <a href="#s3a" class="sb-sub">└ チャネル別</a>
+  <a href="#s3b" class="sb-sub">└ Google検索</a>
+  <a href="#s3c" class="sb-sub">└ ディレクトリ別</a>
+  <a href="#s4">4. アクションプラン</a>
+  <div class="sb-group">参考資料</div>
+  <a href="#ref1" class="sb-sub">検索エンジン</a>
+  <a href="#ref2" class="sb-sub">生成AI</a>
+  <a href="#ref3" class="sb-sub">SNS</a>
+  <a href="#ref4" class="sb-sub">メール</a>
+  <a href="#ref5" class="sb-sub">ディレクトリ Top10</a>
+</nav>
+
+<main class="mn">
+
+<!-- ════════════════════════════════════════
+  1. グローバル戦略
+════════════════════════════════════════ -->
+<section class="sec" id="s1">
+  <div class="sec-hd">
+    <div class="sec-num">1</div>
+    <div class="sec-title">SEO / AI対策 — グローバル戦略</div>
+  </div>
+
+  <div class="strategy-item">
+    <div class="icon">🌏</div>
+    <div class="body">
+      <div class="title">グローバルの成功体験を日本へ展開</div>
+      <div class="desc">2025年後半、米国（.com）サイトを中心に生成AIを活用した戦略的なコンテンツ制作を徹底した結果、オーガニックトラフィックにおいて良い成果が出ました。</div>
+      <div class="sub">→ この「実証済みの成功モデル」を、今、日本市場（.co）へフル投入するフェーズに入りました。グローバルの成功を日本で再現・最大化させることがミッションです。</div>
+    </div>
+  </div>
+
+  <div class="strategy-item">
+    <div class="icon">🇯🇵</div>
+    <div class="body">
+      <div class="title">なぜ今、日本（.co）が最優先（Tier 1）なのか</div>
+      <div class="desc">
+        <strong>① 事業貢献度：</strong>日本市場は、UMU全体の売上・営業規模において大きなウェイトを占める「収益の柱」です。<br><br>
+        <strong>② インフラ整備の完了：</strong>3月18日のサイト統合が無事完了し、ブーストをかけるための器が整いました。<br><br>
+        <strong>③ Googleアップデートの追い風：</strong>統合直後にGoogleコアアップデートが重なり、ドメインの信頼性が一気に高まったこの瞬間を逃さず投資することで、成長が見込まれます。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+  2. プロジェクト体制
+════════════════════════════════════════ -->
+<section class="sec" id="s2">
+  <div class="sec-hd">
+    <div class="sec-num">2</div>
+    <div class="sec-title">SEO / AI対策 — プロジェクト体制と役割</div>
+  </div>
+
+  <div class="team-wrap">
+    <div class="team-card" style="border-top:3px solid #2196F3">
+      <div class="role">Global SEO Lead</div>
+      <div class="name">Lei さん</div>
+      <div class="detail">
+        <strong>役割：</strong>全ドメイン（各国サイト）のSEO戦略を舵取りする統括責任者。<br><br>
+        <strong>役割の詳細：</strong>グローバル全体の検索トレンドやアルゴリズム変更を分析し、UMU全体のSEO戦略を定義。米国（.com）での成功事例に基づき、今回の日本（.co）への先行投資と施策の移植を主導しています。
+      </div>
+    </div>
+    <div class="team-card" style="border-top:3px solid #23A565">
+      <div class="role">SEO &amp; Digital Marketing</div>
+      <div class="name">Huifeng さん</div>
+      <div class="detail">
+        <strong>役割：</strong>実務的なデータ計測と、デジタルマーケティング領域のロジスティクス担当。<br><br>
+        <strong>役割の詳細：</strong>GA4やサーチコンソール等の計測環境の整備、Salesforce連携の最適化を担います。また、今後本格始動する「生成AIコンテンツプロジェクト」の窓口であり、技術的実装とSEO戦略を繋ぐ架け橋となります。
+      </div>
+    </div>
+    <div class="team-card" style="border-top:3px solid #3E51B5">
+      <div class="role">PM（制作の司令塔）</div>
+      <div class="name">Hengyi さん</div>
+      <div class="detail">
+        <strong>役割：</strong>制作の司令塔。<br><br>
+        <strong>内容：</strong>SEO要件を実際のページとして具現化するための総合窓口。デザイナー、エンジニア、インフラ、そしてプロダクトチームを横断的に動かし、開発からデプロイ（公開）までの全工程を管理します。
+      </div>
+    </div>
+  </div>
+
+  <div class="ins info">
+    <div class="t">私の立ち位置</div>
+    <div class="b">Lei さんの全体戦略を日本市場に適合（ローカライズ）させ、Huifeng さんや Hengyi さんとも協業しながら、リソースを具体的にどの施策に配分するかを決定していきます。</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+  3. サイトの実績分析
+════════════════════════════════════════ -->
+<section class="sec" id="s3">
+  <div class="sec-hd">
+    <div class="sec-num">3</div>
+    <div class="sec-title">サイトの実績分析</div>
+  </div>
+
+  <!-- 3-A チャネル別 -->
+  <div id="s3a">
+    <div class="a-sub">月間平均ユーザー数 — チャネル別</div>
+    <div class="data-src">
+      <strong>参考データソース：</strong>ツール: GA4 (.jp / .co)、Google search console (.jp / .co) ／ <strong>計測期間：</strong>2025年1月〜2026年4月
+    </div>
+
+    <div class="c2">
+      <div class="chart-card">
+        <div class="chart-title">チャネル構成比（ダイレクト含む）月間平均 127,312名</div>
+        <div style="position:relative;height:200px"><canvas id="pie1"></canvas></div>
+        <div id="pie1leg" style="margin-top:8px"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">マーケティングチャネルのみ（ダイレクト除く）月間平均 26,298名</div>
+        <div style="position:relative;height:200px"><canvas id="pie2"></canvas></div>
+        <div id="pie2leg" style="margin-top:8px"></div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <hr>
+
+  <!-- 3-B Google検索 -->
+  <div id="s3b">
+    <div class="a-sub">Google検索 — ユーザー数</div>
+    <div class="data-src">
+      <strong>参考データソース：</strong>ツール: GA4 (.jp / .co)、Google search console (.jp / .co) ／ <strong>計測期間：</strong>2025年1〜2026年4月
+    </div>
+
+    <table class="kpi-tbl" style="margin-bottom:10px">
+      <thead><tr><th>指標</th><th>統合前（2026年3月）</th><th>統合後（2026年4月）</th><th>評価</th></tr></thead>
+      <tbody>
+        <tr><td>uu_all（全ユーザー）</td><td>15,167</td><td><strong>18,891</strong></td><td class="pos">▲ +24.6%</td></tr>
+        <tr><td>uu_new（新規ユーザー）</td><td>8,278</td><td>9,747</td><td class="pos">▲ +17.8%</td></tr>
+        <tr><td>クリック数</td><td>34,913</td><td>35,900</td><td class="pos">統合前水準を維持 ✓</td></tr>
+        <tr><td>表示回数（合算）</td><td>714,000</td><td>307,000</td><td class="neu">▼ 57%（URL重複解消による正常化）</td></tr>
+      </tbody>
+    </table>
+
+    <div class="ins info" style="margin-bottom:12px">
+      <div class="t">ℹ️ 表示回数▼57%は「減少」ではなく「URL重複の正常化」</div>
+      <div class="b">統合前は.co/.jpの2URLで同一コンテンツが重複計上。統合により1URLに集約された正常化。.co単体では前月比+41%の増加。</div>
+    </div>
+
+    <div class="c2">
+      <div class="chart-card full">
+        <div class="chart-title">uu_all / uu_new 月別推移（2025年1月〜2026年4月）</div>
+        <div class="leg">
+          <span><span class="ld" style="background:#2196F3"></span>uu_all（全ユーザー）</span>
+          <span><span class="ld" style="background:#DD4E40"></span>uu_new（新規ユーザー）</span>
+          <span><span style="display:inline-block;width:9px;height:9px;background:rgba(186,117,23,.2);border-radius:1px"></span>.co GA4未計測期間</span>
+        </div>
+        <div style="position:relative;height:240px"><canvas id="trendChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="c2">
+      <div class="chart-card">
+        <div class="chart-title">.co / .jp 別 uu_all（2025年8月〜2026年4月）</div>
+        <div class="leg"><span><span class="ld" style="background:#2196F3"></span>.co</span><span><span class="ld" style="background:#09BCD4"></span>.jp</span></div>
+        <div style="position:relative;height:200px"><canvas id="stackAll"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">.co / .jp 別 uu_new（2025年8月〜2026年4月）</div>
+        <div class="leg"><span><span class="ld" style="background:#2196F3"></span>.co</span><span><span class="ld" style="background:#09BCD4"></span>.jp</span></div>
+        <div style="position:relative;height:200px"><canvas id="stackNew"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 3-C ディレクトリ別 -->
+  <div id="s3c">
+    <div class="a-sub">2026年4月 — ユーザー数 ディレクトリ別（マーケティングページのみ）</div>
+    <div class="data-src">
+      <strong>参考データソース：</strong>GA4（.co）／ <strong>計測期間：</strong>2026年4月 ／ プロダクト利用ページ（/course/ /session/ /program/ 等）は除外済
+    </div>
+
+    <div class="c2">
+      <div class="chart-card">
+        <div class="chart-title">ディレクトリ別 UU構成比（トップページ含む）合計 42,036名</div>
+        <div style="position:relative;height:210px"><canvas id="dirPie1"></canvas></div>
+        <div id="dirPie1leg" style="margin-top:8px"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">ディレクトリ別 UU構成比（トップページ除く）合計 22,755名</div>
+        <div style="position:relative;height:210px"><canvas id="dirPie2"></canvas></div>
+        <div id="dirPie2leg" style="margin-top:8px"></div>
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+  4. アクションプラン
+════════════════════════════════════════ -->
+<section class="sec" id="s4">
+  <div class="sec-hd">
+    <div class="sec-num">4</div>
+    <div class="sec-title">6つの戦略施策 — アクションプラン</div>
+  </div>
+
+  <!-- ① -->
+  <div class="action-num-header">
+    <div class="n" style="background:#DD4E40">①</div>
+    サイト全体の最適化
+  </div>
+  <div class="action-block">
+    <div class="action-purpose"><strong>目的：</strong>情報の整合性とドメイン権威性の強化</div>
+    <ul class="action-items">
+      <li>コーポレートページ、Topページ主要セクションの表示内容刷新</li>
+      <li>「イベント・お知らせ」ディレクトリの整理と古い情報のアーカイブ化</li>
+    </ul>
+  </div>
+
+  <!-- ② -->
+  <div class="action-num-header">
+    <div class="n" style="background:#DD4E40">②</div>
+    新プロダクト・既存ページの垂直立ち上げ
+  </div>
+  <div class="action-block">
+    <div class="action-purpose"><strong>目的：</strong>新製品LPの早期構築と既存資産のコンバージョン改善</div>
+    <ul class="action-items">
+      <li>新製品「AGL」「AI マネジメント Dojo」第2フェーズのページ実装・公開</li>
+      <li>「Performance Learning Award」特設サイトのアップデートと導線改修</li>
+    </ul>
+  </div>
+
+  <!-- ③ -->
+  <div class="action-num-header">
+    <div class="n" style="background:#FFC610;color:#1A2B4A">③</div>
+    コラムコンテンツ「5軸展開」による網羅
+  </div>
+  <div class="action-block">
+    <div class="action-purpose"><strong>目的：</strong>5軸で「量と質」を担保し、潜在層への網を広げる</div>
+    <ul class="action-items">
+      <li><strong>AI活用：</strong>グローバルチームと連携したAI記事量産体制の構築と初期投入</li>
+      <li><strong>専門性：</strong>丸山さん監修の定期連載開始と、構成案のブラッシュアップ</li>
+      <li><strong>グローバル：</strong>海外コラムの翻訳・ローカライズによる最先端情報の提供</li>
+      <li><strong>トレンド：</strong>イベントレポートおよび重要キーワード軸の新コラム制作</li>
+      <li><strong>資産活用：</strong>既存記事のリライトによる検索順位の再浮上</li>
+    </ul>
+  </div>
+
+  <!-- ④ -->
+  <div class="action-num-header">
+    <div class="n" style="background:#FFC610;color:#1A2B4A">④</div>
+    テクニカル基盤と計測環境の強化
+  </div>
+  <div class="action-block">
+    <div class="action-purpose"><strong>目的：</strong>CMS環境の最適化および、データに基づく意思決定基盤の構築</div>
+    <ul class="action-items">
+      <li>WordPressテンプレートの改善による表示速度と運用性の向上</li>
+      <li>AI検索（AEO）対策を意識した内部構造（構造化データ等）のマークアップ実装</li>
+    </ul>
+  </div>
+
+  <!-- ⑤ -->
+  <div class="action-num-header">
+    <div class="n" style="background:#2196F3">⑤</div>
+    プロダクト UX・ログイン導線の最適化
+  </div>
+  <div class="action-block">
+    <div class="action-purpose"><strong>目的：</strong>ログイン前後のユーザビリティ改善およびマーケットプレイスの活性化</div>
+    <ul class="action-items">
+      <li>既存のログインエラーの完全解消と、不要な公開コースの削除（断捨離）</li>
+      <li>ユーザーが迷わず学習・購入へ至るための最短導線の設計</li>
+      <li>マーケットプレイスのUI/UX改善による、学習・購入への最短導線設計</li>
+    </ul>
+  </div>
+
+  <!-- ⑥ -->
+  <div class="action-num-header">
+    <div class="n" style="background:#2196F3">⑥</div>
+    外部評価（メディア・KOL）の活用と促進
+  </div>
+  <div class="action-block">
+    <div class="action-purpose"><strong>目的：</strong>IT Review、アスピック等の外部評価やKOL連携による、良質な被リンクと信頼の獲得</div>
+    <ul class="action-items">
+      <li>IT Reviewの掲載情報更新および、新規レビュー獲得施策の実行</li>
+      <li>外部発信時のリンク貼付・SNS拡散を標準化する「社内活用ガイドライン」の作成・共有</li>
+    </ul>
+  </div>
+</section>
+<section class="sec" id="ref">
+  <div class="app-banner">
+    <h2>📊 参考資料 — 各チャネル詳細グラフ</h2>
+    <p>2025年3月〜2026年4月 / .co + .jp 積み上げ / チャネルごとの適切なスケールで表示</p>
+  </div>
+
+  <div id="ref1">
+    <div class="a-sub">検索エンジン別（Google / Yahoo / Bing）</div>
+    <div class="c2">
+      <div class="chart-card">
+        <div class="chart-title">Google オーガニック</div>
+        <div class="leg"><span><span class="ld" style="background:#2196F3"></span>.co</span><span><span class="ld" style="background:#09BCD4"></span>.jp</span></div>
+        <div style="position:relative;height:180px"><canvas id="r_google"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Bing オーガニック</div>
+        <div class="leg"><span><span class="ld" style="background:#2196F3"></span>.co</span><span><span class="ld" style="background:#09BCD4"></span>.jp</span></div>
+        <div style="position:relative;height:180px"><canvas id="r_bing"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Yahoo オーガニック</div>
+        <div class="leg"><span><span class="ld" style="background:#2196F3"></span>.co</span><span><span class="ld" style="background:#09BCD4"></span>.jp</span></div>
+        <div style="position:relative;height:180px"><canvas id="r_yahoo"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div id="ref2">
+    <div class="a-sub">生成AI流入（ChatGPT / Perplexity / Gemini / Copilot）</div>
+    <div class="c2">
+      <div class="chart-card">
+        <div class="chart-title">ChatGPT（chatgpt.com）</div>
+        <div class="leg"><span><span class="ld" style="background:#2196F3"></span>.co</span><span><span class="ld" style="background:#09BCD4"></span>.jp</span></div>
+        <div style="position:relative;height:160px"><canvas id="r_chatgpt"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Perplexity（perplexity.ai）</div>
+        <div class="leg"><span><span class="ld" style="background:#2196F3"></span>.co</span><span><span class="ld" style="background:#09BCD4"></span>.jp</span></div>
+        <div style="position:relative;height:160px"><canvas id="r_perplexity"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Gemini（gemini.google.com）</div>
+        <div class="leg"><span><span class="ld" style="background:#2196F3"></span>.co</span><span><span class="ld" style="background:#09BCD4"></span>.jp</span></div>
+        <div style="position:relative;height:160px"><canvas id="r_gemini"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Copilot / Claude / NotebookLM</div>
+        <div style="position:relative;height:160px"><canvas id="r_otherAI"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div id="ref3">
+    <div class="a-sub">SNS・比較サイト（Facebook / LinkedIn / PR Times / IT Review）</div>
+    <div class="c2">
+      <div class="chart-card">
+        <div class="chart-title">Facebook（facebook.com）</div>
+        <div class="leg"><span><span class="ld" style="background:#2196F3"></span>.co</span><span><span class="ld" style="background:#09BCD4"></span>.jp</span></div>
+        <div style="position:relative;height:160px"><canvas id="r_fb"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">LinkedIn（linkedin.com）</div>
+        <div class="leg"><span><span class="ld" style="background:#2196F3"></span>.co</span><span><span class="ld" style="background:#09BCD4"></span>.jp</span></div>
+        <div style="position:relative;height:160px"><canvas id="r_li"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">PR Times（prtimes.jp）</div>
+        <div class="leg"><span><span class="ld" style="background:#2196F3"></span>.co</span><span><span class="ld" style="background:#09BCD4"></span>.jp</span></div>
+        <div style="position:relative;height:160px"><canvas id="r_prt"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">IT Review（itreview.jp）</div>
+        <div class="leg"><span><span class="ld" style="background:#2196F3"></span>.co</span><span><span class="ld" style="background:#09BCD4"></span>.jp</span></div>
+        <div style="position:relative;height:160px"><canvas id="r_itreview"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div id="ref4">
+    <div class="a-sub">メール — ニュースレター合算（newsletter / mail + listmail / mail）</div>
+    <div class="c2">
+      <div class="chart-card full">
+        <div class="chart-title">ニュースレター月別推移（2025年3月〜2026年4月）</div>
+        <div class="leg"><span><span class="ld" style="background:#2196F3"></span>.co</span><span><span class="ld" style="background:#09BCD4"></span>.jp</span></div>
+        <div style="position:relative;height:200px"><canvas id="r_email"></canvas></div>
+      </div>
+    </div>
+  </div>
+</section>
+  <hr>
+
+  <div id="ref5">
+    <div class="a-sub">2026年4月 — ディレクトリ別 ユーザー数 Top10（マーケティングページのみ）</div>
+    <div id="dir-tables"></div>
+  </div>
+
+
+<div style="text-align:center;padding:20px 0;color:var(--gray);font-size:11px;border-top:1px solid var(--border)">
+  UMU SEO・AI対策戦略 ／ データ出所：GA4・Google Search Console（2025年3月〜2026年4月）
+</div>
+</main>
+
+<script>
+const C={blue:'#2196F3',teal:'#09BCD4',green:'#23A565',amber:'#FFC610',red:'#DD4E40',purple:'#3E51B5',gray:'#6B7280'};
+const gc='rgba(0,0,0,.05)',tc='rgba(0,0,0,.38)';
+const m14=['25/3','25/4','25/5','25/6','25/7','25/8','25/9','25/10','25/11','25/12','26/1','26/2','26/3','26/4'];
+const m9=['25/8','25/9','25/10','25/11','25/12','26/1','26/2','26/3','26/4'];
+
+// Plugins
+const vP={id:'vlines',beforeDatasetsDraw(ch){
+  const {ctx,chartArea:ca,scales:{x}}=ch;if(!x||!ca)return;
+  (ch.config.options._vl||[]).forEach(({i,color,label,solid,ly})=>{
+    const px=x.getPixelForValue(i);ctx.save();ctx.beginPath();
+    ctx.setLineDash(solid?[]:[4,3]);ctx.strokeStyle=color;ctx.lineWidth=1.5;
+    ctx.moveTo(px,ca.top);ctx.lineTo(px,ca.bottom);ctx.stroke();
+    if(label){ctx.setLineDash([]);ctx.font='9px sans-serif';ctx.fillStyle=color;ctx.fillText(label,px+3,ca.top+(ly||12));}
+    ctx.restore();
+  });
+}};
+const bgP={id:'bgrect',beforeDatasetsDraw(ch){
+  const {ctx,chartArea:ca,scales:{x}}=ch;if(!x||!ca)return;
+  (ch.config.options._bg||[]).forEach(({to,color})=>{
+    const x2=Math.min(x.getPixelForValue(to),ca.right);
+    ctx.save();ctx.fillStyle=color;ctx.fillRect(ca.left,ca.top,x2-ca.left,ca.bottom-ca.top);ctx.restore();
+  });
+}};
+Chart.register(vP,bgP);
+
+const am='rgba(133,79,11,.48)',pu='rgba(83,74,183,.52)';
+const vl14=[{i:5,color:am,label:'8月移管',ly:24},{i:12.5,color:pu,label:'3/18統合',solid:true}];
+const vl9=[{i:7.5,color:pu,label:'3/18統合',solid:true}];
+
+const baseOpt=(vl,stacked=true,yfmt)=>({responsive:true,maintainAspectRatio:false,scales:{
+  x:{stacked,grid:{color:gc},ticks:{color:tc,font:{size:9},autoSkip:false,maxRotation:45}},
+  y:{stacked,grid:{color:gc},ticks:{color:tc,font:{size:9},callback:yfmt||(v=>v>=1000?(v/1000).toFixed(0)+'k':v)}}
+},plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},_vl:vl});
+
+function mkStack(id,coD,jpD,vl){
+  const labels = vl===vl9?m9:m14;
+  new Chart(id,{type:'bar',data:{labels,datasets:[
+    {label:'.co',data:coD,backgroundColor:C.blue,stack:'a'},
+    {label:'.jp',data:jpD,backgroundColor:C.teal,stack:'a'},
+  ]},options:baseOpt(vl)});
+}
+function mkLine(id,coD,jpD){
+  new Chart(id,{type:'line',data:{labels:m9,datasets:[
+    {label:'.co',data:coD,borderColor:C.blue,backgroundColor:'transparent',tension:.3,pointRadius:3,pointBackgroundColor:C.blue,borderWidth:2},
+    {label:'.jp',data:jpD,borderColor:C.teal,backgroundColor:'transparent',tension:.3,pointRadius:3,pointBackgroundColor:C.teal,borderDash:[5,3],borderWidth:2},
+  ]},options:baseOpt(vl9,false)});
+}
+
+// ── CHANNEL PIE ──
+function mkPie(id,legId,data,total,field){
+  new Chart(id,{type:'doughnut',data:{labels:data.map(d=>d.l),datasets:[{data:data.map(d=>d[field]),backgroundColor:data.map(d=>d.c),borderWidth:1.5,borderColor:'#fff',hoverOffset:5}]},
+  options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{const p=(ctx.parsed/total*100).toFixed(1);return ` ${ctx.label}: ${ctx.parsed.toLocaleString()}名 (${p}%)`;}}}}}}); 
+  const box=document.getElementById(legId);if(!box)return;
+  data.forEach(d=>{
+    const pct=(d[field]/total*100).toFixed(1);
+    const r=document.createElement('div');
+    r.style.cssText='display:flex;align-items:center;gap:5px;margin-bottom:4px;font-size:10px;color:#6B7280';
+    r.innerHTML=`<span style="width:8px;height:8px;border-radius:2px;background:${d.c};flex-shrink:0;display:inline-block"></span><span style="flex:1">${d.l}</span><span style="font-weight:600;color:#1A2B4A">${pct}%</span>`;
+    box.appendChild(r);
+  });
+}
+
+const chData=[
+  {l:'ダイレクト',avg:101014,c:'#888780'},
+  {l:'Google検索',avg:12858,c:C.blue},
+  {l:'ニュースレター',avg:7092,c:'#D85A30'},
+  {l:'Bing検索',avg:2978,c:'#6AAEE3'},
+  {l:'Yahoo検索',avg:2173,c:'#9FD4F5'},
+  {l:'Facebook',avg:304,c:'#1D9E75'},
+  {l:'その他',avg:889,c:'#E5E7EB'},
+];
+const ch2=chData.filter(d=>d.l!=='ダイレクト');
+mkPie('pie1','pie1leg',chData,127312,'avg');
+mkPie('pie2','pie2leg',ch2,26298,'avg');
+
+// ── TREND ──
+const m16=['25/1','25/2','25/3','25/4','25/5','25/6','25/7','25/8','25/9','25/10','25/11','25/12','26/1','26/2','26/3','26/4'];
+const uA=[11741,10967,9757,10167,9498,9085,8183,7774,15256,15890,14454,14216,14503,15306,15167,18891];
+const uN=[11280,10563,9517,9798,9095,8591,7838,7147,11715,9769,8425,8311,8114,8239,8276,9747];
+new Chart('trendChart',{type:'line',data:{labels:m16,datasets:[
+  {label:'uu_all',data:uA,borderColor:C.blue,backgroundColor:'rgba(37,99,235,.05)',tension:.3,pointRadius:3,pointBackgroundColor:C.blue,fill:true,borderWidth:2},
+  {label:'uu_new',data:uN,borderColor:C.red,backgroundColor:'transparent',tension:.3,pointRadius:3,pointBackgroundColor:C.red,borderDash:[5,3],borderWidth:2},
+]},options:{responsive:true,maintainAspectRatio:false,scales:{
+  x:{grid:{color:gc},ticks:{color:tc,font:{size:9},autoSkip:false,maxRotation:45}},
+  y:{grid:{color:gc},ticks:{color:tc,font:{size:9},callback:v=>v.toLocaleString()}}
+},plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},
+_bg:[{to:6.5,color:'rgba(186,117,23,.07)'}],
+_vl:[{i:7,color:am,label:'8月移管',ly:24},{i:14.5,color:pu,label:'3/18統合',solid:true}]}});
+
+// ── STACK uu_all / uu_new ──
+mkStack('stackAll',[1257,8058,8420,8216,8287,7784,8833,11012,18891],[6517,7198,7470,6238,5929,6719,6473,4155,0],vl9);
+mkStack('stackNew',[960,4872,2697,2499,2710,1707,2031,4388,9747],[6187,6843,7072,5926,5601,6407,6208,3888,0],vl9);
+
+// ── DIR PIE ──
+const dirD=[
+  {l:'/ (トップページ)',users:19281,c:'#3E51B5'},
+  {l:'/event/ (イベント)',users:6329,c:'#D85A30'},
+  {l:'/column/ (コラム)',users:3690,c:'#1D9E75'},
+  {l:'/market/ (マーケット)',users:3270,c:'#378ADD'},
+  {l:'/company/ (会社情報)',users:1669,c:'#888780'},
+  {l:'/interview/ (導入事例)',users:1478,c:'#9FD4F5'},
+  {l:'/product/ (製品紹介)',users:1266,c:'#6AAEE3'},
+  {l:'/info/ (インフォ)',users:1123,c:'#C6EAF5'},
+  {l:'/download/ (資料DL)',users:957,c:'#E8C56A'},
+  {l:'/plan/ (料金)',users:608,c:'#F4A261'},
+  {l:'/contact/ (問い合わせ)',users:577,c:'#E76F51'},
+  {l:'その他',users:420,c:'#B7C4CF'},
+];
+const dirD2=dirD.filter(d=>d.l!=='/ (トップページ)');
+const dt1=dirD.reduce((s,d)=>s+d.users,0);
+const dt2=dirD2.reduce((s,d)=>s+d.users,0);
+mkPie('dirPie1','dirPie1leg',dirD,dt1,'users');
+mkPie('dirPie2','dirPie2leg',dirD2,dt2,'users');
+
+// ── REFERENCE CHARTS ──
+mkStack('r_google',[0,0,0,0,0,1257,8058,8420,8216,8287,7784,8833,11012,18930],[14240,10333,9660,9257,8353,6626,7349,7597,6350,6084,6824,6536,0,0],vl14);
+mkStack('r_bing',[0,0,0,0,0,578,2662,4144,3560,3121,2999,2954,3239,4428],[1916,1449,1458,1375,1568,1046,1175,1315,751,635,747,569,0,0],vl14);
+mkStack('r_yahoo',[0,0,0,0,0,164,1276,960,909,746,611,779,1092,2330],[3277,2429,2231,1994,1774,1435,1552,1522,1310,1321,1377,1331,0,0],vl14);
+mkStack('r_chatgpt',[0,0,0,0,0,5,113,65,53,71,35,38,31,69],[64,65,95,81,85,91,65,65,44,50,60,31,0,0],vl14);
+mkStack('r_perplexity',[0,0,0,0,0,2,1,2,4,2,4,5,4,13],[64,52,54,59,47,26,16,13,23,21,25,13,0,0],vl14);
+mkStack('r_gemini',[0,0,0,0,0,0,2,1,1,2,3,5,17,18],[26,17,14,23,25,16,22,5,5,15,14,10,0,0],vl14);
+new Chart('r_otherAI',{type:'bar',data:{labels:m14,datasets:[
+  {label:'Copilot',data:[0,0,0,0,0,2,2,2,1,2,3,3,4,7],backgroundColor:C.blue,stack:'a'},
+  {label:'Claude',data:[0,0,0,0,0,0,0,0,0,0,0,0,0,8],backgroundColor:'#3E51B5',stack:'a'},
+  {label:'NotebookLM',data:[0,0,0,0,0,0,0,0,2,1,0,0,3,4],backgroundColor:'#A78BFA',stack:'a'},
+
+]},options:{...baseOpt(vl14),plugins:{legend:{display:true,labels:{font:{size:9},boxWidth:8,padding:6}},tooltip:{mode:'index',intersect:false}}}});
+mkStack('r_fb',[0,0,0,0,0,6,98,84,55,58,100,135,98,269],[181,1094,718,442,66,256,181,99,66,141,62,40,0,0],vl14);
+mkStack('r_li',[0,0,0,0,0,0,0,1,4,7,6,21,16,19],[73,74,33,40,15,37,103,33,48,31,11,30,0,0],vl14);
+mkStack('r_prt',[0,0,0,0,0,0,0,1,32,26,21,13,18,27],[60,118,99,41,57,77,60,32,38,13,23,21,0,0],vl14);
+mkStack('r_itreview',[0,0,0,0,0,0,0,0,0,0,1,0,0,2],[46,41,42,43,25,23,23,30,22,18,34,9,0,0],vl14);
+mkStack('r_email',[0,0,0,0,0,0,0,0,243,3504,4940,5537,2936,4165],[10246,6933,8530,9661,7967,6872,6170,3402,3533,4654,4687,5312,0,0],vl14);
+
+// ── SIDEBAR ACTIVE ──
+const secs=document.querySelectorAll('.sec,[id^="s3"],[id^="ref"]');
+const links=document.querySelectorAll('.sb a');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.remove('on'));const a=document.querySelector(`.sb a[href="#${e.target.id}"]`);if(a)a.classList.add('on');}});
+},{rootMargin:'-15% 0px -70% 0px'});
+document.querySelectorAll('[id]').forEach(el=>{if(el.closest('.mn'))obs.observe(el);});
+
+
+// ── DIRECTORY TOP10 TABLES ──
+const dirTop10 = [
+  {
+    name:'/ (トップページ)', color:'#3E51B5', users:19281,
+    pages:[{p:'/',u:19281}]
+  },
+  {
+    name:'/event/ (イベント・ウェビナー)', color:'#D85A30', users:6329,
+    pages:[
+      {p:'/event/',u:728},{p:'/event/atd-ice-2026-pre-persol-career/',u:716},
+      {p:'/event/atd-ice-2026-pre-seminar/',u:479},{p:'/event/202604_umu-spring-summit-2026/',u:370},
+      {p:'/event/hybridtheory-umu-ai-management-20260410/',u:435},
+      {p:'/event/atd-ice-2026-pre-yamamoto/',u:417},
+      {p:'/event/acompany-umu-generative-ai-security-literacy/',u:405},
+      {p:'/event/pls2024_mcc/',u:253},{p:'/event/202604_ai_management-2/',u:374},
+      {p:'/event/atd-ice-2026-pre-nagashima/',u:306}
+    ]
+  },
+  {
+    name:'/column/ (コラム・ブログ)', color:'#1D9E75', users:3690,
+    pages:[
+      {p:'/column/',u:414},{p:'/column/the-next-decade-of-ai/',u:159},
+      {p:'/column/trainingschedule_210805/',u:159},{p:'/column/newcomer_example_checklist/',u:129},
+      {p:'/column/teleapo_tips_202201/',u:124},{p:'/column/learning-technology-maruyama83/',u:95},
+      {p:'/column/ai-roleplay-2026/',u:87},{p:'/column/knowledge-fixation/',u:83},
+      {p:'/column/learningpyramid_20211001/',u:73},{p:'/column/learning-technology-maruyama91/',u:45}
+    ]
+  },
+  {
+    name:'/market/ (マーケットプレイス)', color:'#378ADD', users:3270,
+    pages:[
+      {p:'/market/course/25d697374a7b55fabb405929',u:186},{p:'/market/course/651fa5d701c4de8856fa5a29',u:183},
+      {p:'/market/course/6fbeaaf471eda6d797375429',u:183},{p:'/market/course/4982d1380263ee592d15f35c',u:183},
+      {p:'/market/course/105fcefcd53f200ea0b79b80',u:180},{p:'/market/course/4080622dbc1ca2dce5ffb52e',u:180},
+      {p:'/market/course/8b3517a0ad8e7504a306dcb8',u:175},{p:'/market/course/7acd0be7d9833cd06858d916',u:171},
+      {p:'/market/course/4feca1dc97381129932fbb14',u:166},{p:'/market/course/6f81422993db6be36589fbd7',u:161}
+    ]
+  },
+  {
+    name:'/company/ (会社情報)', color:'#888780', users:1669,
+    pages:[
+      {p:'/company/',u:1385},{p:'/company/tsuruha/',u:165},
+      {p:'/company/leadership',u:4},{p:'/company/trainocate/',u:20},
+      {p:'/company/tsumura/',u:14},{p:'/company/yamato_transport/',u:6},
+      {p:'/company/astellas/',u:10},{p:'/company/fujitsu/',u:7},
+      {p:'/company/sonpo/',u:10},{p:'/company/takeda/',u:8}
+    ]
+  },
+  {
+    name:'/interview/ (導入事例)', color:'#9FD4F5', users:1478,
+    pages:[
+      {p:'/interview/',u:402},{p:'/interview/nippon-express/',u:69},
+      {p:'/interview/tsuruha-hd/',u:49},{p:'/interview/astellas-5/',u:54},
+      {p:'/interview/tsumura-2/',u:54},{p:'/interview/jbpo/',u:44},
+      {p:'/interview/yamato-transport/',u:43},{p:'/interview/mynavi/',u:29},
+      {p:'/interview/tsumura-new-employee-training/',u:31},{p:'/interview/zozo/',u:27}
+    ]
+  },
+  {
+    name:'/product/ (製品紹介)', color:'#6AAEE3', users:1266,
+    pages:[
+      {p:'/product/enterprise',u:378},{p:'/product/ai-roleplay-chatbot',u:150},
+      {p:'/product/ai-literacy',u:155},{p:'/product/ai-management-dojo',u:79},
+      {p:'/product/learning-design',u:119},{p:'/product/uask',u:16},
+      {p:'/product/ai-tools',u:33},{p:'/product/chatbot',u:30},
+      {p:'/product/ai-for-sales',u:27},{p:'/product/ai-audio-slides',u:27}
+    ]
+  },
+  {
+    name:'/info/ (インフォメーション)', color:'#C6EAF5', users:1123,
+    pages:[
+      {p:'/info/matsukiyo-online-contents/',u:173},{p:'/info/site-integration/',u:148},
+      {p:'/info/download/',u:97},{p:'/info/',u:108},
+      {p:'/info/sompo-agent-academyxumu/',u:67},{p:'/info/high-performer-employee-improvement/',u:24},
+      {p:'/info/umu-ai-management-dojo/',u:26},{p:'/info/note-interview/',u:28},
+      {p:'/info/childcare-leave-return/',u:35},{p:'/info/iyakuhin/',u:28}
+    ]
+  },
+  {
+    name:'/download/ (資料ダウンロード)', color:'#E8C56A', users:957,
+    pages:[
+      {p:'/download',u:523},{p:'/download-doc/ai-transformation-guidelines/',u:202},
+      {p:'/download-doc/',u:92},{p:'/download-doc/umu-ai-role-play-white-paper/',u:65},
+      {p:'/download-doc/ai-roleplay-download/',u:34},{p:'/download-doc/umu-ai-role-play-white-paper2/',u:14},
+      {p:'/download-doc/ai-literacy-course-download/',u:8},{p:'/download-doc/ai-management-dojo-download/',u:6},
+      {p:'/download-doc/umu-total-case-studies/',u:7},{p:'/download-doc/marketplace-case/',u:4}
+    ]
+  },
+  {
+    name:'/plan/ (料金・プラン)', color:'#F4A261', users:608,
+    pages:[
+      {p:'/plan/pricing',u:603},{p:'/plan/subscription',u:5}
+    ]
+  },
+  {
+    name:'/contact/ (お問い合わせ)', color:'#E76F51', users:577,
+    pages:[
+      {p:'/contact/',u:575},{p:'/contact',u:2}
+    ]
+  },
+];
+
+const dirContainer = document.getElementById('dir-tables');
+
+dirTop10.forEach(dir => {
+  const maxU = dir.pages[0].u;
+
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'margin-bottom:20px';
+
+  // Header
+  const hdr = document.createElement('div');
+  hdr.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML = `
+    <span style="display:inline-block;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#fff;background:${dir.color}">${dir.name}</span>
+    <span style="font-size:11px;color:var(--gray);margin-left:auto">合計ユーザー：<strong style="color:var(--navy)">${dir.users.toLocaleString()}名</strong></span>
+  `;
+  wrap.appendChild(hdr);
+
+  // Column headers
+  const colHdr = document.createElement('div');
+  colHdr.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:4px;font-size:9px;color:var(--gray);padding:0 2px;border-bottom:1px solid var(--border);padding-bottom:3px';
+  colHdr.innerHTML = '<div style="width:18px">#</div><div style="flex:1">ページパス</div><div style="width:90px">規模</div><div style="width:60px;text-align:right">ユーザー数</div>';
+  wrap.appendChild(colHdr);
+
+  // Rows
+  dir.pages.forEach((p, i) => {
+    const pct = (p.u / maxU * 100).toFixed(1);
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:8px;padding:5px 2px;border-bottom:1px solid #F3F4F6;font-size:11px';
+    row.innerHTML = `
+      <div style="width:18px;color:var(--gray);font-size:10px;text-align:right">${i+1}</div>
+      <div style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:monospace;font-size:10px;color:var(--gray)" title="${p.p}">${p.p}</div>
+      <div style="width:90px;height:8px;background:#F3F4F6;border-radius:4px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${dir.color};border-radius:4px"></div></div>
+      <div style="width:60px;text-align:right;font-weight:600;color:var(--navy)">${p.u.toLocaleString()}</div>
+    `;
+    wrap.appendChild(row);
+  });
+
+  dirContainer.appendChild(wrap);
+});
+
+</script>
+</body>
+</html>
