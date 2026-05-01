@@ -247,19 +247,19 @@ hr{border:none;border-top:1px solid var(--border);margin:16px 0}
 
   <!-- 3-A チャネル別 -->
   <div id="s3a">
-    <div class="a-sub">月間平均ユーザー数 — チャネル別</div>
+    <div class="a-sub">2026年4月 — 月間ユーザー数 チャネル別</div>
     <div class="data-src">
-      <strong>参考データソース：</strong>ツール: GA4 (.jp / .co)、Google search console (.jp / .co) ／ <strong>計測期間：</strong>2025年1月〜2026年4月
+      <strong>参考データソース：</strong>ツール: GA4 (.jp / .co)、Google search console (.jp / .co) ／ <strong>計測期間：</strong>2026年4月
     </div>
 
     <div class="c2">
       <div class="chart-card">
-        <div class="chart-title">チャネル構成比（ダイレクト含む）月間平均 127,312名</div>
+        <div class="chart-title">チャネル構成比（ダイレクト含む） 574,783名</div>
         <div style="position:relative;height:200px"><canvas id="pie1"></canvas></div>
         <div id="pie1leg" style="margin-top:8px"></div>
       </div>
       <div class="chart-card">
-        <div class="chart-title">マーケティングチャネルのみ（ダイレクト除く）月間平均 26,298名</div>
+        <div class="chart-title">マーケティングチャネルのみ（ダイレクト除く） 34,539名</div>
         <div style="position:relative;height:200px"><canvas id="pie2"></canvas></div>
         <div id="pie2leg" style="margin-top:8px"></div>
       </div>
@@ -388,7 +388,7 @@ hr{border:none;border-top:1px solid var(--border);margin:16px 0}
     <div class="action-purpose"><strong>目的：</strong>5軸で「量と質」を担保し、潜在層への網を広げる</div>
     <ul class="action-items">
       <li><strong>AI活用：</strong>グローバルチームと連携したAI記事量産体制の構築と初期投入</li>
-      <li><strong>専門性：</strong>丸山さん監修の定期連載開始と、構成案のブラッシュアップ</li>
+      <li><strong>専門性：</strong>丸山さん監修の定期連載の構成案のブラッシュアップ</li>
       <li><strong>グローバル：</strong>海外コラムの翻訳・ローカライズによる最先端情報の提供</li>
       <li><strong>トレンド：</strong>イベントレポートおよび重要キーワード軸の新コラム制作</li>
       <li><strong>資産活用：</strong>既存記事のリライトによる検索順位の再浮上</li>
@@ -621,17 +621,21 @@ function mkPie(id,legId,data,total,field){
 }
 
 const chData=[
-  {l:'ダイレクト',avg:101014,c:'#888780'},
-  {l:'Google検索',avg:12858,c:C.blue},
-  {l:'ニュースレター',avg:7092,c:'#D85A30'},
-  {l:'Bing検索',avg:2978,c:'#6AAEE3'},
-  {l:'Yahoo検索',avg:2173,c:'#9FD4F5'},
-  {l:'Facebook',avg:304,c:'#1D9E75'},
-  {l:'その他',avg:889,c:'#E5E7EB'},
+  {l:'ダイレクト',v:470250,c:'#888780'},
+  {l:'検索エンジン',v:25728,c:'#2196F3'},
+  {l:'メール',v:8319,c:'#D85A30'},
+  {l:'SNS',v:348,c:'#1D9E75'},
+  {l:'生成AI',v:144,c:'#9C27B0'},
+  {l:'既存顧客（社内システム経由）',v:69994,c:'#E5E7EB'},
 ];
-const ch2=chData.filter(d=>d.l!=='ダイレクト');
-mkPie('pie1','pie1leg',chData,127312,'avg');
-mkPie('pie2','pie2leg',ch2,26298,'avg');
+const ch2=[
+  {l:'検索エンジン',v:25728,c:'#2196F3'},
+  {l:'メール',v:8319,c:'#D85A30'},
+  {l:'SNS',v:348,c:'#1D9E75'},
+  {l:'生成AI',v:144,c:'#9C27B0'},
+];
+mkPie('pie1','pie1leg',chData,574783,'v');
+mkPie('pie2','pie2leg',ch2,34539,'v');
 
 // ── TREND ──
 const m16=['25/1','25/2','25/3','25/4','25/5','25/6','25/7','25/8','25/9','25/10','25/11','25/12','26/1','26/2','26/3','26/4'];
